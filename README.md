@@ -34,11 +34,12 @@ All responses carry open CORS headers; `OPTIONS` preflight is handled on every r
 main  ← this superproject branch
 ├── backend/    git submodule  →  branch: backend   (Bun server)
 ├── frontend/   git submodule  →  branch: frontend  (Angular 19 SPA)
-└── cli/        git submodule  →  branch: cli       (Node.js CLI)
+├── cli/        git submodule  →  branch: cli       (Node.js CLI)
+└── bundle/     git submodule  →  branch: bundle    (generated release snapshot)
 ```
 
-Each branch is a fully independent, deployable unit with its own `package.json` and
-`README.md`. The `main` branch contains only this README, `.gitmodules`, and the
+Each source branch is a fully independent, deployable unit with its own `package.json`
+and `README.md`. The `main` branch contains only this README, `.gitmodules`, and the
 commit-pointer for each submodule.
 
 ---
@@ -124,6 +125,46 @@ Set `SNIP_API` to target a different backend:
 
 ```sh
 SNIP_API=https://snip.example.com snip ls
+```
+
+---
+
+## Bundle & deployment  `bundle/`
+
+`bundle/` is a git submodule on the `bundle` branch — a self-contained, deployment-ready
+snapshot assembled from the three source layers:
+
+```
+bundle/
+├── server.js       ← Bun HTTP server (copied from backend/)
+├── cli.js          ← Node.js CLI     (copied from cli/)
+├── public/         ← Angular SPA build (from frontend/dist/snip-frontend/browser/)
+├── .env            ← PUBLIC_DIR=./public  (Bun loads this at startup)
+├── package.json    ← "start": "bun server.js"
+├── Dockerfile      ← FROM oven/bun:1-alpine · EXPOSE 3000
+├── .dockerignore
+└── railway.json    ← selects DOCKERFILE builder
+```
+
+The server auto-serves the SPA because `.env` sets `PUBLIC_DIR=./public`.
+
+### Regenerate
+
+```sh
+# Assemble only (no push)
+node scripts/build-bundle.mjs
+
+# Assemble + push bundle branch + bump main pointers
+node scripts/build-bundle.mjs --push
+```
+
+The script is a **safe no-op** when nothing has changed — it checks `git diff --cached`
+before every commit and skips if the stage is empty.
+
+### Deploy to Railway
+
+Point Railway at the `bundle` branch. It picks up `railway.json` automatically and
+builds with the included `Dockerfile`.
 ```
 
 Platform wrappers (`chmod +x snip` on Unix):
