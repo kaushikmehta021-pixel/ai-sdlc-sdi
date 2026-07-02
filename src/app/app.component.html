@@ -1,0 +1,67 @@
+﻿<main>
+  <header>
+    <h1>&#9986; Snip</h1>
+    <p>Paste a long URL and get a short link instantly.</p>
+  </header>
+
+  <!-- Shorten form -->
+  <section class="card">
+    <h2>Shorten a URL</h2>
+    <form (ngSubmit)="shorten()" #f="ngForm">
+      <div class="row">
+        <input
+          name="url"
+          type="url"
+          placeholder="https://example.com/very/long/path"
+          [(ngModel)]="urlInput"
+          required
+          autocomplete="off"
+          class="url-input"
+        />
+        <button type="submit" [disabled]="busy()">
+          {{ busy() ? 'Shortening\u2026' : 'Shorten' }}
+        </button>
+      </div>
+
+      @if (formError()) {
+        <p class="msg error">{{ formError() }}</p>
+      }
+
+      @if (created()) {
+        <p class="msg success">
+          Short link:&nbsp;
+          <a [href]="created()!.shortUrl" target="_blank" rel="noopener">{{ created()!.shortUrl }}</a>
+        </p>
+      }
+    </form>
+  </section>
+
+  <!-- Links table -->
+  <section class="card">
+    <h2>All links</h2>
+    @if (links().length === 0) {
+      <p class="empty">No links yet.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Original URL</th>
+            <th>Hits</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (link of links(); track link.code) {
+            <tr>
+              <td><a [href]="link.shortUrl" target="_blank" rel="noopener">{{ link.code }}</a></td>
+              <td class="original"><a [href]="link.url" target="_blank" rel="noopener">{{ link.url }}</a></td>
+              <td>{{ link.hits }}</td>
+              <td>{{ link.createdAt | date:'medium' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </section>
+</main>
