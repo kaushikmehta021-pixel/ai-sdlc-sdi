@@ -1,0 +1,12 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/kaushikmehta021-pixel/ai-sdlc-sdi.git
+	branch = backend
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/kaushikmehta021-pixel/ai-sdlc-sdi.git
+	branch = frontend
+[submodule "cli"]
+	path = cli
+	url = https://github.com/kaushikmehta021-pixel/ai-sdlc-sdi.git
+	branch = cli
