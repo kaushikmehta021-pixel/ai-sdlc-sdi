@@ -1,14 +1,13 @@
 ﻿<main>
-  <header>
+  <header class="hero">
     <h1>&#9986; Snip</h1>
-    <p>Paste a long URL and get a short link instantly.</p>
+    <p>Paste a long URL &mdash; get a short link instantly.</p>
   </header>
 
-  <!-- Shorten form -->
-  <section class="card">
-    <h2>Shorten a URL</h2>
+  <!-- Pill input (hero centerpiece) -->
+  <section class="input-hero">
     <form (ngSubmit)="shorten()" #f="ngForm">
-      <div class="row">
+      <div class="pill-row">
         <input
           name="url"
           type="url"
@@ -16,19 +15,19 @@
           [(ngModel)]="urlInput"
           required
           autocomplete="off"
-          class="url-input"
+          class="pill-input"
         />
-        <button type="submit" [disabled]="busy()">
+        <button type="submit" class="pill-btn" [disabled]="busy()">
           {{ busy() ? 'Shortening\u2026' : 'Shorten' }}
         </button>
       </div>
 
       @if (formError()) {
-        <p class="msg error">{{ formError() }}</p>
+        <p class="notice notice--error">{{ formError() }}</p>
       }
 
       @if (created()) {
-        <p class="msg success">
+        <p class="notice notice--success">
           Short link:&nbsp;
           <a [href]="created()!.shortUrl" target="_blank" rel="noopener">{{ created()!.shortUrl }}</a>
         </p>
@@ -38,7 +37,7 @@
 
   <!-- Links table -->
   <section class="card">
-    <h2>All links</h2>
+    <h2 class="card-title">All links</h2>
     @if (links().length === 0) {
       <p class="empty">No links yet.</p>
     } @else {

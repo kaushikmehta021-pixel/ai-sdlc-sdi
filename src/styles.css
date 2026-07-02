@@ -1,1 +1,66 @@
-/* You can add global styles to this file, and also import other style files */
+/* ── Design tokens ──────────────────────────────────────────────────────── */
+:root {
+  /* Background & surface */
+  --bg:           #09090b;
+  --surface:      #18181b;
+  --surface-hi:   #27272a;
+
+  /* Text */
+  --text:         #fafafa;
+  --muted:        #71717a;
+  --placeholder:  #52525b;
+
+  /* Accent gradient: coral → pink → violet */
+  --accent-1:     #fb923c;
+  --accent-2:     #f472b6;
+  --accent-3:     #a78bfa;
+  --accent-grad:  linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+
+  /* Hero glow tints */
+  --glow-a:       rgba(251, 146,  60, 0.18);
+  --glow-b:       rgba(244, 114, 182, 0.14);
+  --glow-c:       rgba(167, 139, 250, 0.10);
+
+  /* Borders & shadows */
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(255, 255, 255, 0.20);
+  --shadow-card:  0 1px 3px rgba(0,0,0,.5), 0 0 0 1px var(--border);
+  --shadow-glow:  0 0 60px 0 rgba(244, 114, 182, 0.15);
+
+  /* Radii */
+  --radius-pill:  9999px;
+  --radius-card:  16px;
+  --radius-btn:   9999px;
+
+  /* Type */
+  --font:         'Inter', system-ui, -apple-system, sans-serif;
+  --text-hero:    clamp(2rem, 5vw, 3.5rem);
+  --text-sub:     1.125rem;
+  --text-body:    0.9375rem;
+  --text-sm:      0.8125rem;
+  --text-xs:      0.75rem;
+
+  /* Spacing */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2.5rem;
+  --space-xl:  4rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
